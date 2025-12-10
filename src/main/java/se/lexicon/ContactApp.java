@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class ContactApp {
 
     static String [] names= new String[10];// accessible everywhere
+    static String[] phone = new String[10];
     static int count = 0;//the system will count the number of input
 
     Scanner scanner = new Scanner(System.in);
@@ -18,7 +19,7 @@ public class ContactApp {
         System.out.println("1. Add contacts");
         System.out.println("2. Search by name");
         System.out.println("3. Display all contacts");
-        System.out.println("0. Exit");
+        System.out.println("4. Exit");
 
         System.out.println("Choose an option:");
 
@@ -43,7 +44,7 @@ public class ContactApp {
 
             case 4:
                 System.out.println("Goodbye!");
-                break;// stops the loop
+                return;// stops the whole program
 
             default:
                 System.out.println("Invalid option. Please choose a valid option!");
@@ -77,6 +78,7 @@ public class ContactApp {
             }
         }
         names[count]= newContact;
+
         count++;// to update the count, otherwise , the list will still be empty
 
         System.out.println("Contact: " + name + "|" + phone + " saved! ");
@@ -86,27 +88,58 @@ public class ContactApp {
 
     static void searchName(Scanner scanner){
 
-        System.out.println("Enter the name you want to search");
 
-        String searchedName = scanner.nextLine();
+        System.out.println("Choose searching by name or by phone:");
+        System.out.println("1. Searching by name");
+        System.out.println("2. Searching by phone");
 
-        boolean found = false;
+        int option= scanner.nextInt();
+
+        if(option==1){
+            System.out.println("Enter the name you want to search");
+
+            String searchedName = scanner.nextLine();
+            scanner.nextLine();//collect the input before comparing
+
+            boolean found = false;
 
 
-        for (int i=0; i<count; i++){
+            for (int i=0; i<count; i++){
 
 
-            if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())){ // the search will not be case sensitive
-                System.out.println(names[i]);
-                found=true;
+                if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())){ // the search will not be case sensitive
+                    System.out.println(names[i]);
+                    found=true;
 
+
+                }
+
+            }
+            if(!found){
+                System.out.println("No match found!");
+            }
+        } else if (option==2){
+            System.out.println("Enter th phone number you want to search");
+            scanner.nextLine();
+
+            String searchedPhone = scanner.nextLine();
+            boolean found = false;
+            for (int i=0; i<count; i++){
+
+                if (phone[i].equals(searchedPhone)){
+                    System.out.println(names[i] + phone[i]);
+                    found=true;
+                }
+            }
+            if (!found){
+                System.out.println("No match found!");
 
             }
 
         }
-        if(!found){
-            System.out.println("No match found!");
-        }
+
+
+
 
 
 
