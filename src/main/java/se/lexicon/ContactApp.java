@@ -42,6 +42,11 @@ public class ContactApp {
                 break;
 
             case 4:
+                System.out.println("Goodbye!");
+                break;// stops the loop
+
+            default:
+                System.out.println("Invalid option. Please choose a valid option!");
 
 
         }
@@ -91,16 +96,19 @@ public class ContactApp {
         for (int i=0; i<count; i++){
 
 
-            if (names[i].startsWith(searchedName)){
+            if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())){ // the search will not be case sensitive
                 System.out.println(names[i]);
                 found=true;
 
 
             }
+
         }
         if(!found){
             System.out.println("No match found!");
         }
+
+
 
     }
 
