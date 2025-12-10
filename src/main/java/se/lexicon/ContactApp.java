@@ -22,8 +22,6 @@ public class ContactApp {
 
         System.out.println("Choose an option:");
 
-        //addNames();
-
         //code to choose options
 
         int option = scanner.nextInt();
@@ -36,10 +34,11 @@ public class ContactApp {
                 break;// to stop java from continuing
 
             case 2:
-
+                searchName(scanner);
+                break;
 
             case 3:
-                searchName();
+                listName();
                 break;
 
             case 4:
@@ -51,28 +50,18 @@ public class ContactApp {
 
     }
 
-    /*static void listNames(){
-        String [] names = {"John Smith | 072 0256233", "Ange Ornella Nibaruta | 072 0256233", "Jane Doe| 072 0256634 ", "Robert Johnson| 072 0216533", "Jenna Williams| 078 0258933"};
-        for (String name: names){
-            System.out.println(name);
-        }
-
-
-    }*/
 
     static void addNames(Scanner scanner){
 
-        if (count== names.length){
+        /*if (count== names.length){
             System.out.println("Constact list is full!");
             return;
-        }
+        }*/
         System.out.println("Please enter the name: ");
         String name= scanner.nextLine();// asks for the name
 
         System.out.println("Please enter the phone number: ");
         String phone= scanner.nextLine();//asks for the phone and saves it
-
-
 
         String newContact = name + "|" + phone;
 
@@ -85,35 +74,37 @@ public class ContactApp {
         names[count]= newContact;
         count++;// to update the count, otherwise , the list will still be empty
 
-
-
-                // we want to check duplicates
-      /* String[]uniqueNames = new String[10];// new array to store unique names
-        int uniqueCount = 0;//how many unique names we have added
-        for (int i=0; i< names.length; i++){
-            boolean alreadyExists = false;
-
-            //checks if the name is already in the unique array
-            for (int j=0; j<uniqueCount; j++){
-                if (names[i]== uniqueNames[j]){
-                    alreadyExists=true;
-                    break;//found a duplicate, stops the loop
-                }
-            }
-            if (!alreadyExists){
-                uniqueNames[uniqueCount] = names[i];
-                uniqueCount++;
-            }
-
-        }*/
-
         System.out.println("Contact: " + name + "|" + phone + " saved! ");
-
-
 
     }
 
-    static void searchName (){
+
+    static void searchName(Scanner scanner){
+
+        System.out.println("Enter the name you want to search");
+
+        String searchedName = scanner.nextLine();
+
+        boolean found = false;
+
+
+        for (int i=0; i<count; i++){
+
+
+            if (names[i].startsWith(searchedName)){
+                System.out.println(names[i]);
+                found=true;
+
+
+            }
+        }
+        if(!found){
+            System.out.println("No match found!");
+        }
+
+    }
+
+    static void listName (){
 
         System.out.println("------List of all names------");
 
@@ -127,6 +118,10 @@ public class ContactApp {
         }
 
 
+
+    }
+
+    static void exit(){
 
     }
 
