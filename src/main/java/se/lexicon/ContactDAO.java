@@ -5,137 +5,132 @@ import java.util.Scanner;
 
 public class ContactDAO {
 
-    static String [] names= new String[10];// accessible everywhere
+    static String[] names = new String[10];// accessible everywhere
     static String[] phone = new String[10];
     static int count = 0;//the system will count the number of input
 
     Scanner scanner = new Scanner(System.in);
 
-    void main(){
+    void main() { // menu
 
-        while (true){//keeps showing the menu until user chooses to exit
-
-
-        System.out.println("=====Contact Management App========");
-        System.out.println("1. Add contacts");
-        System.out.println("2. Search by name");
-        System.out.println("3. Display all contacts");
-        System.out.println("4. Exit");
-
-        System.out.println("Choose an option:");
-
-        //code to choose options
-
-        int option = scanner.nextInt();
-        scanner.nextLine();// to wait for the input first
+        while (true) {//keeps showing the menu until user chooses to exit
 
 
-        switch (option){
-            case 1:
-                addNames(scanner);
-                break;// to stop java from continuing
+            System.out.println("=====Contact Management App========");
+            System.out.println("1. Add contacts");
+            System.out.println("2. Search by name");
+            System.out.println("3. Display all contacts");
+            System.out.println("4. Sort contact");
+            System.out.println("5. Exit");
 
-            case 2:
-                searchName(scanner);
-                break;
+            System.out.println("Choose an option:");
 
-            case 3:
-                listName();
-                break;
+            //code to choose options
 
-            case 4:
-                System.out.println("Goodbye!");
-                return;// stops the whole program
-
-            default:
-                System.out.println("Invalid option. Please choose a valid option!");
+            int option = scanner.nextInt();
+            scanner.nextLine();// to wait for the input first
 
 
-        }
+            switch (option) {
+                case 1:
+                    addNames(scanner);
+                    break;// to stop java from continuing
+
+                case 2:
+                    searchName(scanner);
+                    break;
+
+                case 3:
+                    listName();
+                    break;
+
+
+                case 4:
+                    sortContact();
+                    break;
+
+                case 5:
+                    System.out.println("Goodbye!");
+                    return;// stops the whole program
+
+                default:
+                    System.out.println("Invalid option. Please choose a valid option!");
+
+
+            }
 
         }
 
     }
 
 
-    static void addNames(Scanner scanner){
+    static void addNames(Scanner scanner) {
 
-        /*if (count== names.length){
-            System.out.println("Constact list is full!");
-            return;
-        }*/
         System.out.println("Please enter the name: ");
-        String name= scanner.nextLine();// asks for the name
+        String name = scanner.nextLine();// asks for the name
 
         System.out.println("Please enter the phone number: ");
-        String phoneNumber= scanner.nextLine();//asks for the phone and saves it
+        String phoneNumber = scanner.nextLine();//asks for the phone and saves it
 
-        //String newContact = name + "|" + phoneNumber;
-
-        for (int i=0; i<count; i++){
-            if (names[i].equalsIgnoreCase(name) && phone[i].equalsIgnoreCase(phoneNumber)){
+        for (int i = 0; i < count; i++) {
+            if (names[i].equalsIgnoreCase(name) && phone[i].equalsIgnoreCase(phoneNumber)) {
                 System.out.println("The contact already exists!");
                 return;//stops adding names
             }
         }
-       // names[count]= newContact;
-        names[count]= name;
-        phone[count]= phoneNumber;
+
+        names[count] = name;
+        phone[count] = phoneNumber;
         count++;
-
-
-        //count++;// to update the count, otherwise , the list will still be empty
 
         System.out.println("Contact: " + name + "|" + phoneNumber + " saved! ");
 
     }
 
 
-    static void searchName(Scanner scanner){
+    static void searchName(Scanner scanner) {
 
 
         System.out.println("Choose searching by name or by phone:");
         System.out.println("1. Searching by name");
         System.out.println("2. Searching by phone");
 
-        int option= scanner.nextInt();
+        int option = scanner.nextInt();
         scanner.nextLine();
 
-        if(option==1){
+        if (option == 1) {
             System.out.println("Enter the name you want to search");
 
             String searchedName = scanner.nextLine();
-           // scanner.nextLine();//collect the input before comparing
 
             boolean found = false;
 
-            for (int i=0; i<count; i++){
+            for (int i = 0; i < count; i++) {
 
 
-                if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())){ // the search will not be case sensitive
+                if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())) { // the search will not be case sensitive
                     System.out.println(names[i] + "|" + phone[i]);
-                    found=true;
+                    found = true;
 
                 }
 
             }
-            if(!found){
+            if (!found) {
                 System.out.println("No match found!");
             }
-        } else if (option==2){
+        } else if (option == 2) {
             System.out.println("Enter th phone number you want to search");
             String searchedPhone = scanner.nextLine();
-            //scanner.nextLine();
 
             boolean found = false;
-            for (int i=0; i<count; i++){
+            for (int i = 0; i < count; i++) {
 
-                if (phone[i].equals(searchedPhone)){
+                if (phone[i].equals(searchedPhone)) {
                     System.out.println(names[i] + "|" + phone[i]);
-                    found=true;
+                    found = true;
                 }
             }
-            if (!found){
+            if (!found) {
                 System.out.println("No match found!");
 
             }
@@ -145,27 +140,50 @@ public class ContactDAO {
 
     }
 
-    static void listName (){
+    static void listName() {
 
         System.out.println("------List of all names------");
 
-        if (count==0){
+        if (count == 0) {
             System.out.println("The list is empty, enter new contact");
             return;
         }
 
-        for (int i = 0; i< count; i++){
+        for (int i = 0; i < count; i++) {
             System.out.println(names[i] + "|" + phone[i]);
         }
 
 
+    }
+
+    static void sortContact() {
+
+        for (int i=0; i<count-1; i++){//the first name in the array
+
+            for (int j= i+1; j<count; j++){// the second name in the array
+                if (names[i].compareToIgnoreCase(names[j])> 0)  {// this will compare two names alphabetically
+                    String swapName = names[i];// this new parameter will swap names alphabetically
+                    names[i] = names[j];
+                    names[j] = swapName;
+
+                    String swapPhone = phone[i];
+                    phone[i]= phone[j];
+                    phone[j] = swapPhone;
+
+                }
+            }
+        }
+        System.out.println("Contacts sorted successfully!");
+        for (int i=0; i<count; i++){
+            System.out.println(names[i] + "|" + phone[i]);
+        }
 
     }
 
-    static void sortContact(){
-        Arrays.sort(names);
 
-    }
 
 
 }
+
+
+
