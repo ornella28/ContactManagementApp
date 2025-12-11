@@ -9,68 +9,10 @@ public class ContactDAO {
     static String[] phone = new String[10];
     static int count = 0;//the system will count the number of input
 
-    Scanner scanner = new Scanner(System.in);
 
-    void main() { // menu
-
-        while (true) {//keeps showing the menu until user chooses to exit
+    public static void addContact(String name, String phoneNumber) {
 
 
-            System.out.println("=====Contact Management App========");
-            System.out.println("1. Add contacts");
-            System.out.println("2. Search by name");
-            System.out.println("3. Display all contacts");
-            System.out.println("4. Sort contact");
-            System.out.println("5. Exit");
-
-            System.out.println("Choose an option:");
-
-            //code to choose options
-
-            int option = scanner.nextInt();
-            scanner.nextLine();// to wait for the input first
-
-
-            switch (option) {
-                case 1:
-                    addNames(scanner);
-                    break;// to stop java from continuing
-
-                case 2:
-                    searchName(scanner);
-                    break;
-
-                case 3:
-                    listName();
-                    break;
-
-
-                case 4:
-                    sortContact();
-                    break;
-
-                case 5:
-                    System.out.println("Goodbye!");
-                    return;// stops the whole program
-
-                default:
-                    System.out.println("Invalid option. Please choose a valid option!");
-
-
-            }
-
-        }
-
-    }
-
-
-    static void addNames(Scanner scanner) {
-
-        System.out.println("Please enter the name: ");
-        String name = scanner.nextLine();// asks for the name
-
-        System.out.println("Please enter the phone number: ");
-        String phoneNumber = scanner.nextLine();//asks for the phone and saves it
 
         for (int i = 0; i < count; i++) {
             if (names[i].equalsIgnoreCase(name) && phone[i].equalsIgnoreCase(phoneNumber)) {
