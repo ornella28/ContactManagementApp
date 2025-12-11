@@ -1,5 +1,6 @@
 package se.lexicon;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ContactDAO {
@@ -69,21 +70,21 @@ public class ContactDAO {
         System.out.println("Please enter the phone number: ");
         String phoneNumber= scanner.nextLine();//asks for the phone and saves it
 
-        names[count]= name;
-        phone[count]= phoneNumber;
-        count++;
-
-        String newContact = name + "|" + phoneNumber;
+        //String newContact = name + "|" + phoneNumber;
 
         for (int i=0; i<count; i++){
-            if (names[i].equalsIgnoreCase(newContact)){
+            if (names[i].equalsIgnoreCase(name) && phone[i].equalsIgnoreCase(phoneNumber)){
                 System.out.println("The contact already exists!");
                 return;//stops adding names
             }
         }
-        names[count]= newContact;
+       // names[count]= newContact;
+        names[count]= name;
+        phone[count]= phoneNumber;
+        count++;
 
-        count++;// to update the count, otherwise , the list will still be empty
+
+        //count++;// to update the count, otherwise , the list will still be empty
 
         System.out.println("Contact: " + name + "|" + phoneNumber + " saved! ");
 
@@ -98,12 +99,13 @@ public class ContactDAO {
         System.out.println("2. Searching by phone");
 
         int option= scanner.nextInt();
+        scanner.nextLine();
 
         if(option==1){
             System.out.println("Enter the name you want to search");
 
             String searchedName = scanner.nextLine();
-            scanner.nextLine();//collect the input before comparing
+           // scanner.nextLine();//collect the input before comparing
 
             boolean found = false;
 
@@ -111,7 +113,7 @@ public class ContactDAO {
 
 
                 if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())){ // the search will not be case sensitive
-                    System.out.println(names[i]);
+                    System.out.println(names[i] + "|" + phone[i]);
                     found=true;
 
                 }
@@ -123,12 +125,12 @@ public class ContactDAO {
         } else if (option==2){
             System.out.println("Enter th phone number you want to search");
             String searchedPhone = scanner.nextLine();
-            scanner.nextLine();
+            //scanner.nextLine();
 
             boolean found = false;
             for (int i=0; i<count; i++){
 
-                if (phone[i]!=null && phone[i].equals(searchedPhone)){
+                if (phone[i].equals(searchedPhone)){
                     System.out.println(names[i] + "|" + phone[i]);
                     found=true;
                 }
@@ -139,10 +141,6 @@ public class ContactDAO {
             }
 
         }
-
-
-
-
 
 
     }
@@ -157,14 +155,15 @@ public class ContactDAO {
         }
 
         for (int i = 0; i< count; i++){
-            System.out.println(names[i]);
+            System.out.println(names[i] + "|" + phone[i]);
         }
 
 
 
     }
 
-    static void exit(){
+    static void sortContact(){
+        Arrays.sort(names);
 
     }
 
