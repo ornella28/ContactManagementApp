@@ -2,7 +2,7 @@ package se.lexicon;
 
 import java.util.Scanner;
 
-public class ContactApp {
+public class ContactDAO {
 
     static String [] names= new String[10];// accessible everywhere
     static String[] phone = new String[10];
@@ -67,9 +67,13 @@ public class ContactApp {
         String name= scanner.nextLine();// asks for the name
 
         System.out.println("Please enter the phone number: ");
-        String phone= scanner.nextLine();//asks for the phone and saves it
+        String phoneNumber= scanner.nextLine();//asks for the phone and saves it
 
-        String newContact = name + "|" + phone;
+        names[count]= name;
+        phone[count]= phoneNumber;
+        count++;
+
+        String newContact = name + "|" + phoneNumber;
 
         for (int i=0; i<count; i++){
             if (names[i].equalsIgnoreCase(newContact)){
@@ -81,7 +85,7 @@ public class ContactApp {
 
         count++;// to update the count, otherwise , the list will still be empty
 
-        System.out.println("Contact: " + name + "|" + phone + " saved! ");
+        System.out.println("Contact: " + name + "|" + phoneNumber + " saved! ");
 
     }
 
@@ -103,14 +107,12 @@ public class ContactApp {
 
             boolean found = false;
 
-
             for (int i=0; i<count; i++){
 
 
                 if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())){ // the search will not be case sensitive
                     System.out.println(names[i]);
                     found=true;
-
 
                 }
 
@@ -120,14 +122,14 @@ public class ContactApp {
             }
         } else if (option==2){
             System.out.println("Enter th phone number you want to search");
+            String searchedPhone = scanner.nextLine();
             scanner.nextLine();
 
-            String searchedPhone = scanner.nextLine();
             boolean found = false;
             for (int i=0; i<count; i++){
 
-                if (phone[i].equals(searchedPhone)){
-                    System.out.println(names[i] + phone[i]);
+                if (phone[i]!=null && phone[i].equals(searchedPhone)){
+                    System.out.println(names[i] + "|" + phone[i]);
                     found=true;
                 }
             }
