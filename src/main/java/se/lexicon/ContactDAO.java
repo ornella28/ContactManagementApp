@@ -12,188 +12,115 @@ public class ContactDAO {
 
 
 
-    static void addNames(Scanner scanner) {
-
-        System.out.println("Please enter the name: ");
-        String name = scanner.nextLine();// asks for the name
-
-        System.out.println("Please enter the phone number: ");
-        String phoneNumber = scanner.nextLine();//asks for the phone and saves it
-
+    static boolean addContact(String name, String phoneNumber) {
         for (int i = 0; i < count; i++) {
             if (names[i].equalsIgnoreCase(name) && phone[i].equalsIgnoreCase(phoneNumber)) {
-                System.out.println("The contact already exists!");
-                return;//stops adding names
+                return false; // contact already exists
             }
         }
-
         names[count] = name;
         phone[count] = phoneNumber;
         count++;
-
-        System.out.println("Contact: " + name + "|" + phoneNumber + " saved! ");
-
+        return true; // contact added successfully
     }
 
 
-    static void searchName(Scanner scanner) {
-
-
-        System.out.println("Choose searching by name or by phone:");
-        System.out.println("1. Searching by name");
-        System.out.println("2. Searching by phone");
-
-        int option = scanner.nextInt();
-        scanner.nextLine();
-
-        if (option == 1) {
-            System.out.println("Enter the name you want to search");
-
-            String searchedName = scanner.nextLine();
-
-            boolean found = false;
-
-            for (int i = 0; i < count; i++) {
-
-
-                if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())) { // the search will not be case sensitive
-                    System.out.println(names[i] + "|" + phone[i]);
-                    found = true;
-
-                }
-
-            }
-            if (!found) {
-                System.out.println("No match found!");
-            }
-        } else if (option == 2) {
-            System.out.println("Enter th phone number you want to search");
-            String searchedPhone = scanner.nextLine();
-
-            boolean found = false;
-            for (int i = 0; i < count; i++) {
-
-                if (phone[i].equals(searchedPhone)) {
-                    System.out.println(names[i] + "|" + phone[i]);
-                    found = true;
-                }
-            }
-            if (!found) {
-                System.out.println("No match found!");
-
-            }
-
-        }
-
-
-    }
-
-    static void listName() {
-
-        System.out.println("------List of all names------");
-
-        if (count == 0) {
-            System.out.println("The list is empty, enter new contact");
-            return;
-        }
-
+    static String[] searchByName(String searchedName) {
+        String[] results = new String[count];
+        int resultCount = 0;
         for (int i = 0; i < count; i++) {
-            System.out.println(names[i] + "|" + phone[i]);
+            if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())) {
+                results[resultCount] = names[i] + "|" + phone[i];
+                resultCount++;
+            }
         }
-
-
+        String[] finalResults = new String[resultCount];
+        System.arraycopy(results, 0, finalResults, 0, resultCount);
+        return finalResults;
     }
 
-    static void sortContact() {
-        for (int i=0; i<count-1; i++){ //the first name in the array
-            for (int j= i+1; j<count; j++){// the second name in the array
-                if (names[i].compareToIgnoreCase(names[j])> 0)  {// this will compare two names alphabetically
-                    String swapName = names[i];// this new parameter will swap names alphabetically
+    static String[] searchByPhone(String searchedPhone) {
+        String[] results = new String[count];
+        int resultCount = 0;
+        for (int i = 0; i < count; i++) {
+            if (phone[i].equals(searchedPhone)) {
+                results[resultCount] = names[i] + "|" + phone[i];
+                resultCount++;
+            }
+        }
+        String[] finalResults = new String[resultCount];
+        System.arraycopy(results, 0, finalResults, 0, resultCount);
+        return finalResults;
+    }
+
+    static String[] getAllContacts() {
+        String[] contacts = new String[count];
+        for (int i = 0; i < count; i++) {
+            contacts[i] = names[i] + "|" + phone[i];
+        }
+        return contacts;
+    }
+
+    static void sortContacts() {
+        for (int i = 0; i < count - 1; i++) {
+            for (int j = i + 1; j < count; j++) {
+                if (names[i].compareToIgnoreCase(names[j]) > 0) {
+                    String swapName = names[i];
                     names[i] = names[j];
                     names[j] = swapName;
 
                     String swapPhone = phone[i];
-                    phone[i]= phone[j];
+                    phone[i] = phone[j];
                     phone[j] = swapPhone;
-
                 }
             }
         }
-        System.out.println("Contacts sorted successfully!");
-        for (int i=0; i<count; i++){
-            System.out.println(names[i] + "|" + phone[i]);
-        }
-
     }
-    static void deleteContact(Scanner scanner){
-        System.out.println("Enter the name of the contact you want to delete: ");
-        String nameToDelete = scanner.nextLine();
-
-        int indexToDelete = -1;// we assume that the contact is not found
-
-        for (int i=0; i<count; i++){
-            if (names[i].equalsIgnoreCase(nameToDelete)){
+    static boolean deleteContact(String nameToDelete) {
+        int indexToDelete = -1;
+        for (int i = 0; i < count; i++) {
+            if (names[i].equalsIgnoreCase(nameToDelete)) {
                 indexToDelete = i;
                 break;
             }
         }
-        if(indexToDelete== -1){
-            System.out.println("Contact not found!");
-            return;
+        if (indexToDelete == -1) {
+            return false; // contact not found
         }
 
-        System.out.println("Are you sure you want to delete " + names[indexToDelete] + "? (y/n): ");
-        String confirmation = scanner.nextLine();
-        if (!confirmation.equalsIgnoreCase("y")) {
-            System.out.println("Deletion cancelled.");
-            return;
+        for (int i = indexToDelete; i < count - 1; i++) {
+            names[i] = names[i + 1];
+            phone[i] = phone[i + 1];
         }
-
-        //shifts all contacts left after deleting one item
-        for(int i= indexToDelete; i<count -1; i++){
-            names[i] = names[i+1];
-            phone[i] = phone[i+1];
-        }
-
-        //clear last item to avoid duplicates and update count
-        names[count-1] = null;
-        phone[count-1] = null;
+        names[count - 1] = null;
+        phone[count - 1] = null;
         count--;
-
-        System.out.println("The contact have been successfully deleted!");
-
+        return true; // contact deleted successfully
     }
 
-    static void updateContact(Scanner scanner){
-        System.out.println("Enter the name of the contact you want to update");
-        String nameToUpdate= scanner.nextLine();
+    static String getContactName(String nameToFind) {
+        for (int i = 0; i < count; i++) {
+            if (names[i].equalsIgnoreCase(nameToFind)) {
+                return names[i];
+            }
+        }
+        return null;
+    }
 
-        int indexToUpdate = -1;//we assume that the contact is not found
-
-        for (int i=0; i<count; i++){
-            if(names[i].equalsIgnoreCase(nameToUpdate)){
+    static boolean updateContact(String nameToUpdate, String newName, String newPhone) {
+        int indexToUpdate = -1;
+        for (int i = 0; i < count; i++) {
+            if (names[i].equalsIgnoreCase(nameToUpdate)) {
                 indexToUpdate = i;
                 break;
             }
         }
-        if(indexToUpdate== -1){
-            System.out.println("Contact not found!");
+        if (indexToUpdate == -1) {
+            return false; // contact not found
         }
-        System.out.println("Enter the new name");
-        String newName = scanner.nextLine();
-
-        System.out.println("Enter the new phone");
-        String newPhone = scanner.nextLine();
-
         names[indexToUpdate] = newName;
         phone[indexToUpdate] = newPhone;
-        System.out.println("The contact " + nameToUpdate + "have been edited successfully!");
-        System.out.println("The new contact is: " + newName + "|" + newPhone);
-
-
-
-
-
+        return true; // contact updated successfully
     }
 
 
