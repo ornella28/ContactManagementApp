@@ -199,6 +199,13 @@ public class ContactDAO {
             return;
         }
 
+        System.out.println("Are you sure you want to delete " + names[indexToDelete] + "? (y/n): ");
+        String confirmation = scanner.nextLine();
+        if (!confirmation.equalsIgnoreCase("y")) {
+            System.out.println("Deletion cancelled.");
+            return;
+        }
+
         //shifts all contacts left after deleting one item
         for(int i= indexToDelete; i<count -1; i++){
             names[i] = names[i+1];
