@@ -21,7 +21,8 @@ public class ContactDAO {
             System.out.println("2. Search by name");
             System.out.println("3. Display all contacts");
             System.out.println("4. Sort contact");
-            System.out.println("5. Exit");
+            System.out.println("5. Delete a contact");
+            System.out.println("6. Exit");
 
             System.out.println("Choose an option:");
 
@@ -50,6 +51,10 @@ public class ContactDAO {
                     break;
 
                 case 5:
+                    deleteContact(scanner);
+                    break;
+
+                case 6:
                     System.out.println("Goodbye!");
                     return;// stops the whole program
 
@@ -175,6 +180,37 @@ public class ContactDAO {
         for (int i=0; i<count; i++){
             System.out.println(names[i] + "|" + phone[i]);
         }
+
+    }
+    static void deleteContact(Scanner scanner){
+        System.out.println("Enter the name of the contact you want to delete: ");
+        String nameToDelete = scanner.nextLine();
+
+        int indexToDelete = -1;// we assume that the contact is not found
+
+        for (int i=0; i<count; i++){
+            if (names[i].equalsIgnoreCase(nameToDelete)){
+                indexToDelete = i;
+                break;
+            }
+        }
+        if(indexToDelete== -1){
+            System.out.println("Contact not found!");
+            return;
+        }
+
+        //shifts all contacts left after deleting one item
+        for(int i= indexToDelete; i<count -1; i++){
+            names[i] = names[i+1];
+            phone[i] = phone[i+1];
+        }
+
+        //clear last item to avoid duplicates and update count
+        names[count-1] = null;
+        phone[count-1] = null;
+        count--;
+
+        System.out.println("The contact have been successfully deleted!");
 
     }
 
