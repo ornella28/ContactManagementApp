@@ -12,56 +12,76 @@ public class ContactDAO {
 
 
 
-    static boolean addContact(String name, String phoneNumber) {
+    static void addNames(Scanner scanner) {
+        System.out.println("Please enter the name: ");
+        String name = scanner.nextLine();
+        System.out.println("Please enter the phone number: ");
+        String phoneNumber = scanner.nextLine();
+
         for (int i = 0; i < count; i++) {
             if (names[i].equalsIgnoreCase(name) && phone[i].equalsIgnoreCase(phoneNumber)) {
-                return false; // contact already exists
+                System.out.println("The contact already exists!");
+                return;
             }
         }
+
         names[count] = name;
         phone[count] = phoneNumber;
         count++;
-        return true; // contact added successfully
+        System.out.println("Contact: " + name + "|" + phoneNumber + " saved! ");
     }
 
 
-    static String[] searchByName(String searchedName) {
-        String[] results = new String[count];
-        int resultCount = 0;
-        for (int i = 0; i < count; i++) {
-            if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())) {
-                results[resultCount] = names[i] + "|" + phone[i];
-                resultCount++;
+    static void searchName(Scanner scanner) {
+        System.out.println("Choose searching by name or by phone:");
+        System.out.println("1. Searching by name");
+        System.out.println("2. Searching by phone");
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option == 1) {
+            System.out.println("Enter the name you want to search");
+            String searchedName = scanner.nextLine();
+            boolean found = false;
+
+            for (int i = 0; i < count; i++) {
+                if (names[i].toLowerCase().startsWith(searchedName.toLowerCase())) {
+                    System.out.println(names[i] + "|" + phone[i]);
+                    found = true;
+                }
+            }
+            if (!found) {
+                System.out.println("No match found!");
+            }
+        } else if (option == 2) {
+            System.out.println("Enter the phone number you want to search");
+            String searchedPhone = scanner.nextLine();
+            boolean found = false;
+            for (int i = 0; i < count; i++) {
+                if (phone[i].equals(searchedPhone)) {
+                    System.out.println(names[i] + "|" + phone[i]);
+                    found = true;
+                }
+            }
+            if (!found) {
+                System.out.println("No match found!");
             }
         }
-        String[] finalResults = new String[resultCount];
-        System.arraycopy(results, 0, finalResults, 0, resultCount);
-        return finalResults;
     }
 
-    static String[] searchByPhone(String searchedPhone) {
-        String[] results = new String[count];
-        int resultCount = 0;
-        for (int i = 0; i < count; i++) {
-            if (phone[i].equals(searchedPhone)) {
-                results[resultCount] = names[i] + "|" + phone[i];
-                resultCount++;
-            }
+    static void listName() {
+        System.out.println("------List of all names------");
+        if (count == 0) {
+            System.out.println("The list is empty, enter new contact");
+            return;
         }
-        String[] finalResults = new String[resultCount];
-        System.arraycopy(results, 0, finalResults, 0, resultCount);
-        return finalResults;
-    }
-
-    static String[] getAllContacts() {
-        String[] contacts = new String[count];
         for (int i = 0; i < count; i++) {
-            contacts[i] = names[i] + "|" + phone[i];
+            System.out.println(names[i] + "|" + phone[i]);
         }
-        return contacts;
     }
 
-    static void sortContacts() {
+    static void sortContact() {
         for (int i = 0; i < count - 1; i++) {
             for (int j = i + 1; j < count; j++) {
                 if (names[i].compareToIgnoreCase(names[j]) > 0) {
@@ -75,8 +95,15 @@ public class ContactDAO {
                 }
             }
         }
+        System.out.println("Contacts sorted successfully!");
+        for (int i = 0; i < count; i++) {
+            System.out.println(names[i] + "|" + phone[i]);
+        }
     }
-    static boolean deleteContact(String nameToDelete) {
+    static void deleteContact(Scanner scanner) {
+        System.out.println("Enter the name of the contact you want to delete: ");
+        String nameToDelete = scanner.nextLine();
+
         int indexToDelete = -1;
         for (int i = 0; i < count; i++) {
             if (names[i].equalsIgnoreCase(nameToDelete)) {
@@ -85,7 +112,15 @@ public class ContactDAO {
             }
         }
         if (indexToDelete == -1) {
-            return false; // contact not found
+            System.out.println("Contact not found!");
+            return;
+        }
+
+        System.out.println("Are you sure you want to delete " + names[indexToDelete] + "? (y/n): ");
+        String confirmation = scanner.nextLine();
+        if (!confirmation.equalsIgnoreCase("y")) {
+            System.out.println("Deletion cancelled.");
+            return;
         }
 
         for (int i = indexToDelete; i < count - 1; i++) {
@@ -95,19 +130,13 @@ public class ContactDAO {
         names[count - 1] = null;
         phone[count - 1] = null;
         count--;
-        return true; // contact deleted successfully
+        System.out.println("The contact has been successfully deleted!");
     }
 
-    static String getContactName(String nameToFind) {
-        for (int i = 0; i < count; i++) {
-            if (names[i].equalsIgnoreCase(nameToFind)) {
-                return names[i];
-            }
-        }
-        return null;
-    }
+    static void updateContact(Scanner scanner) {
+        System.out.println("Enter the name of the contact you want to update");
+        String nameToUpdate = scanner.nextLine();
 
-    static boolean updateContact(String nameToUpdate, String newName, String newPhone) {
         int indexToUpdate = -1;
         for (int i = 0; i < count; i++) {
             if (names[i].equalsIgnoreCase(nameToUpdate)) {
@@ -116,11 +145,18 @@ public class ContactDAO {
             }
         }
         if (indexToUpdate == -1) {
-            return false; // contact not found
+            System.out.println("Contact not found!");
+            return;
         }
+        System.out.println("Enter the new name");
+        String newName = scanner.nextLine();
+        System.out.println("Enter the new phone");
+        String newPhone = scanner.nextLine();
+
         names[indexToUpdate] = newName;
         phone[indexToUpdate] = newPhone;
-        return true; // contact updated successfully
+        System.out.println("The contact " + nameToUpdate + " has been edited successfully!");
+        System.out.println("The new contact is: " + newName + "|" + newPhone);
     }
 
 
