@@ -22,7 +22,8 @@ public class ContactDAO {
             System.out.println("3. Display all contacts");
             System.out.println("4. Sort contact");
             System.out.println("5. Delete a contact");
-            System.out.println("6. Exit");
+            System.out.println("6. Update a contact");
+            System.out.println("7. Exit");
 
             System.out.println("Choose an option:");
 
@@ -55,6 +56,10 @@ public class ContactDAO {
                     break;
 
                 case 6:
+                    updateContact(scanner);
+                    break;
+
+                case 7:
                     System.out.println("Goodbye!");
                     return;// stops the whole program
 
@@ -218,6 +223,38 @@ public class ContactDAO {
         count--;
 
         System.out.println("The contact have been successfully deleted!");
+
+    }
+
+    static void updateContact(Scanner scanner){
+        System.out.println("Enter the name of the contact you want to update");
+        String nameToUpdate= scanner.nextLine();
+
+        int indexToUpdate = -1;//we assume that the contact is not found
+
+        for (int i=0; i<count; i++){
+            if(names[i].equalsIgnoreCase(nameToUpdate)){
+                indexToUpdate = i;
+                break;
+            }
+        }
+        if(indexToUpdate== -1){
+            System.out.println("Contact not found!");
+        }
+        System.out.println("Enter the new name");
+        String newName = scanner.nextLine();
+
+        System.out.println("Enter the new phone");
+        String newPhone = scanner.nextLine();
+
+        names[indexToUpdate] = newName;
+        phone[indexToUpdate] = newPhone;
+        System.out.println("The contact " + nameToUpdate + "have been edited successfully!");
+        System.out.println("The new contact is: " + newName + "|" + newPhone);
+
+
+
+
 
     }
 
